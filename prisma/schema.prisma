@@ -1,0 +1,63 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(uuid())
+  name      String    @default("")
+  email     String    @unique
+  age       Int
+  role      Role      @default(NOT_SELECTED)
+  recommend Recommend @default(NOT_SELECTED)
+  favourite Favourite @default(NOT_SELECTED)
+  comment String
+  Improve   Improve[]
+  timestamp DateTime  @default(now())
+}
+
+model Options {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String
+  Improve     Improve[]
+}
+
+model Improve {
+  user     User   @relation(fields: [userId], references: [id])
+  userId   String
+  option   Options @relation(fields: [optionId], references: [id])
+  optionId Int
+
+  @@id([userId, optionId])
+}
+
+enum Role {
+  NOT_SELECTED
+  STUDENT
+  JOB
+  PREFER_NOT
+  OTHER
+}
+
+enum Recommend {
+  NOT_SELECTED
+  YES
+  NO
+  MAYBE
+}
+
+enum Favourite {
+  NOT_SELECTED
+  HAIR
+  INTERFACE
+  CODE
+  AESTHETIC
+}
