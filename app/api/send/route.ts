@@ -12,17 +12,6 @@ export async function GET() {
     return NextResponse.json(data);
 }
 
-type User = {
-    name: string,
-    email: string,
-    age: number,
-    role: Role,
-    recommend: Recommend,
-    favourite: Favourite,
-    improve: string[],
-    comment: string
-};
-
 export async function POST(request: NextRequest) {
     const user = await request.json();
     console.log("User: ", user);
